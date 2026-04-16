@@ -1,3 +1,4 @@
+/// <reference types="node" />
 import { PrismaClient, Role, CertStatus, Status } from '@prisma/client';
 import { faker } from '@faker-js/faker';
 import * as bcrypt from 'bcryptjs';

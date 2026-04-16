@@ -4,6 +4,8 @@ import rateLimit from 'express-rate-limit';
 import dotenv from 'dotenv';
 import authRoutes from './routes/auth.routes';
 import rentalRoutes from './routes/rental.routes';
+import produceRoutes from './routes/produce.routes';
+import orderRoutes from './routes/order.routes';
 import { sendResponse } from './utils/response';
 
 dotenv.config();
@@ -28,6 +30,8 @@ const authLimiter = rateLimit({
 // Routes
 app.use('/api/auth', authLimiter, authRoutes);
 app.use('/api/rentals', rentalRoutes);
+app.use('/api/produce', produceRoutes);
+app.use('/api/orders', orderRoutes);
 
 // Root route
 app.get('/', (req, res) => {
