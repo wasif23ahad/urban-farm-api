@@ -7,6 +7,7 @@ import rentalRoutes from './routes/rental.routes';
 import produceRoutes from './routes/produce.routes';
 import orderRoutes from './routes/order.routes';
 import forumRoutes from './routes/forum.routes';
+import plantRoutes from './routes/plant.routes';
 import { sendResponse } from './utils/response';
 
 dotenv.config();
@@ -34,6 +35,7 @@ app.use('/api/rentals', rentalRoutes);
 app.use('/api/produce', produceRoutes);
 app.use('/api/orders', orderRoutes);
 app.use('/api/forum', forumRoutes);
+app.use('/api/plants', plantRoutes);
 
 // Root route
 app.get('/', (req, res) => {

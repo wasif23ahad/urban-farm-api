@@ -43,6 +43,7 @@ model User {
   orders        Order[]
   posts         CommunityPost[]
   comments      Comment[]
+  plants        Plant[]
 }
 
 model VendorProfile {
@@ -81,6 +82,7 @@ model RentalSpace {
   price        Float
   availability Boolean       @default(true)
   createdAt    DateTime      @default(now())
+  plants       Plant[]
 }
 
 model Order {
@@ -126,3 +128,27 @@ model SustainabilityCert {
   certificationDate DateTime
   createdAt         DateTime      @default(now())
 }
+
+enum PlantStatus {
+  HEALTHY
+  NEEDS_ATTENTION
+  DORMANT
+  HARVESTED
+}
+
+model Plant {
+  id            String       @id @default(uuid())
+  userId        String
+  user          User         @relation(fields: [userId], references: [id])
+  rentalSpaceId String?
+  rentalSpace   RentalSpace? @relation(fields: [rentalSpaceId], references: [id])
+  name          String
+  species       String?
+  growthStage   String       @default("SEEDLING")
+  status        PlantStatus  @default(HEALTHY)
+  healthNotes   String?
+  plantedAt     DateTime     @default(now())
+  lastChecked   DateTime     @default(now())
+  updatedAt     DateTime     @updatedAt
+}
+
