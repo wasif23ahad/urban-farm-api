@@ -42,6 +42,7 @@ model User {
   vendorProfile VendorProfile?
   orders        Order[]
   posts         CommunityPost[]
+  comments      Comment[]
 }
 
 model VendorProfile {
@@ -95,11 +96,26 @@ model Order {
 }
 
 model CommunityPost {
-  id          String   @id @default(uuid())
+  id          String    @id @default(uuid())
   userId      String
-  user        User     @relation(fields: [userId], references: [id])
+  user        User      @relation(fields: [userId], references: [id])
+  title       String?
   postContent String
-  postDate    DateTime @default(now())
+  postDate    DateTime  @default(now())
+  comments    Comment[]
+}
+
+model Comment {
+  id        String        @id @default(uuid())
+  userId    String
+  user      User          @relation(fields: [userId], references: [id])
+  postId    String
+  post      CommunityPost @relation(fields: [postId], references: [id])
+  content   String
+  parentId  String?
+  parent    Comment?      @relation("CommentReplies", fields: [parentId], references: [id])
+  replies   Comment[]     @relation("CommentReplies")
+  createdAt DateTime      @default(now())
 }
 
 model SustainabilityCert {
