@@ -1,13 +1,111 @@
 // This is your Prisma schema file,
 // learn more about it in the docs: https://pris.ly/d/prisma-schema
 
-// Get a free hosted Postgres database in seconds: `npx create-db`
-
 generator client {
-  provider = "prisma-client"
-  output   = "../generated/prisma"
+  provider = "prisma-client-js"
 }
 
 datasource db {
   provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+enum Role {
+  ADMIN
+  VENDOR
+  CUSTOMER
+}
+
+enum Status {
+  PENDING
+  APPROVED
+  CANCELLED
+  COMPLETED
+}
+
+enum CertStatus {
+  PENDING
+  VERIFIED
+  REJECTED
+}
+
+model User {
+  id            String         @id @default(uuid())
+  name          String
+  email         String         @unique
+  password      String
+  role          Role           @default(CUSTOMER)
+  status        String         @default("ACTIVE")
+  createdAt     DateTime       @default(now())
+  updatedAt     DateTime       @updatedAt
+  vendorProfile VendorProfile?
+  orders        Order[]
+  posts         CommunityPost[]
+}
+
+model VendorProfile {
+  id                  String               @id @default(uuid())
+  userId              String               @unique
+  user                User                 @relation(fields: [userId], references: [id])
+  farmName            String
+  certificationStatus CertStatus           @default(PENDING)
+  farmLocation        String
+  products            Produce[]
+  rentalSpaces        RentalSpace[]
+  orders              Order[]
+  sustainabilityCerts SustainabilityCert[]
+}
+
+model Produce {
+  id                  String     @id @default(uuid())
+  vendorId            String
+  vendor              VendorProfile @relation(fields: [vendorId], references: [id])
+  name                String
+  description         String
+  price               Float
+  category            String
+  certificationStatus CertStatus @default(PENDING)
+  availableQuantity   Int
+  orders              Order[]
+  createdAt           DateTime   @default(now())
+}
+
+model RentalSpace {
+  id           String        @id @default(uuid())
+  vendorId     String
+  vendor       VendorProfile @relation(fields: [vendorId], references: [id])
+  location     String
+  size         String
+  price        Float
+  availability Boolean       @default(true)
+  createdAt    DateTime      @default(now())
+}
+
+model Order {
+  id        String        @id @default(uuid())
+  userId    String
+  user      User          @relation(fields: [userId], references: [id])
+  produceId String?
+  produce   Produce?       @relation(fields: [produceId], references: [id])
+  vendorId  String
+  vendor    VendorProfile @relation(fields: [vendorId], references: [id])
+  status    Status        @default(PENDING)
+  orderDate DateTime      @default(now())
+}
+
+model CommunityPost {
+  id          String   @id @default(uuid())
+  userId      String
+  user        User     @relation(fields: [userId], references: [id])
+  postContent String
+  postDate    DateTime @default(now())
+}
+
+model SustainabilityCert {
+  id                String        @id @default(uuid())
+  vendorId          String
+  vendor            VendorProfile @relation(fields: [vendorId], references: [id])
+  certifyingAgency  String
+  certificationDate DateTime
+  createdAt         DateTime      @default(now())
 }
