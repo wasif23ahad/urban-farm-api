@@ -126,6 +126,8 @@ model SustainabilityCert {
   vendor            VendorProfile @relation(fields: [vendorId], references: [id])
   certifyingAgency  String
   certificationDate DateTime
+  documentUrl       String?
+  status            CertStatus    @default(PENDING)
   createdAt         DateTime      @default(now())
 }
 
