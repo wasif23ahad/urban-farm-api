@@ -24,7 +24,7 @@
   "homepage": "https://github.com/wasif23ahad/urban-farm-api#readme",
   "dependencies": {
     "@faker-js/faker": "^10.4.0",
-    "@prisma/client": "^7.7.0",
+    "@prisma/client": "^6.4.1",
     "bcryptjs": "^3.0.3",
     "cors": "^2.8.6",
     "dotenv": "^17.4.2",
@@ -32,7 +32,7 @@
     "express-rate-limit": "^8.3.2",
     "joi": "^18.1.2",
     "jsonwebtoken": "^9.0.3",
-    "prisma": "^7.7.0"
+    "prisma": "^6.4.1"
   },
   "devDependencies": {
     "@types/bcryptjs": "^2.4.6",

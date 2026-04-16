@@ -2,12 +2,7 @@ import { PrismaClient, Role, CertStatus, Status } from '@prisma/client';
 import { faker } from '@faker-js/faker';
 import * as bcrypt from 'bcryptjs';
 
-const prisma = new PrismaClient({
-  adapter: undefined, // Prisma 7 configuration
-  datasource: {
-    url: process.env.DATABASE_URL
-  }
-} as any);
+const prisma = new PrismaClient();
 
 async function main() {
   console.log('Seeding database...');
